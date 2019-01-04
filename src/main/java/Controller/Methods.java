@@ -1,7 +1,11 @@
+package Controller;
 
-import com.mongodb.MongoClient;
+
+
+
+//import Model.Landareak;
+import Model.Landareak;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 /*
@@ -14,16 +18,9 @@ import org.bson.Document;
  *
  * @author DM3-2-15
  */
-public class ProbaPito {
-    public static void main(String[]args){
-        Landareak land=new Landareak("kk","kk","kk","12",true,"kk");
-        landareaGehitu(land);
-    }
+public class Methods {
     //Insert bat egiteko
-    public static void landareaGehitu(Landareak land) {
-        MongoClient mongoKon = new MongoClient( "localhost" , 27017 ); // datu basera konektatu
-        MongoDatabase db = mongoKon.getDatabase("landareak"); // datu basea
-        MongoCollection<Document> taula = db.getCollection("landareak"); // taula
+    public static void landareaGehitu(Landareak land, MongoCollection taula) {
 
         /* Objectu berria sortu */
         Document docObj = new Document("Izena", land.getName())
@@ -35,7 +32,5 @@ public class ProbaPito {
         
         /* Taulan, pelikula berriaren datuak gorde */
         taula.insertOne(docObj);
-        
-        mongoKon.close(); // konexioa itxi
     }
 }
