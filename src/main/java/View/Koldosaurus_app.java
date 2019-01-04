@@ -122,6 +122,7 @@ public class Koldosaurus_app extends Application {
 
         //Datuak kargatu
         //data = Methods.datuak();
+        Methods.datuak(taula);
 
         table.setItems(data);
         table.getColumns().addAll(NameCol, Description, Color, Height, Flower, CName);
@@ -199,7 +200,7 @@ public class Koldosaurus_app extends Application {
             Landareak landare = table.getSelectionModel().getSelectedItem();
 
             //Hemen ezabatu objetua
-//            LandareakGertu.ezabatu(landare.getCname());
+            Methods.ezabatu(taula,landare.getCName());
             
             data.remove(landare);
             table.setItems(data);
