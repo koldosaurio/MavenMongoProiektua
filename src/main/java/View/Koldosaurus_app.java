@@ -1,14 +1,10 @@
 package View;
 
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import Controller.Methods;
 import Model.Landareak;
 import com.mongodb.MongoClient;
@@ -49,8 +45,8 @@ public class Koldosaurus_app extends Application {
     private final TableView<Landareak> table = new TableView<>();
     ObservableList<Landareak> data = null;
     final HBox hb = new HBox();
-    
-    MongoClient mongoKon = new MongoClient( "localhost" , 27017 ); // datu basera konektatu
+
+    MongoClient mongoKon = new MongoClient("localhost", 27017); // datu basera konektatu
     MongoDatabase db = mongoKon.getDatabase("landareak"); // datu basea
     MongoCollection<Document> taula = db.getCollection("landareak"); // taula
 
@@ -74,9 +70,8 @@ public class Koldosaurus_app extends Application {
         NameCol.setMinWidth(100);
         NameCol.setMaxWidth(150);
         NameCol.setCellValueFactory(
-                new PropertyValueFactory<>("Izena"));
+                new PropertyValueFactory<>("Name"));
         NameCol.setCellFactory(TextFieldTableCell.<Landareak>forTableColumn());
-        
 
         TableColumn<Landareak, String> Description
                 = new TableColumn<>("Description");
@@ -85,15 +80,6 @@ public class Koldosaurus_app extends Application {
         Description.setCellValueFactory(
                 new PropertyValueFactory<>("description"));
         Description.setCellFactory(TextFieldTableCell.<Landareak>forTableColumn());
-        
-
-        TableColumn<Landareak, String> Color = new TableColumn<>("Color");
-        Color.setMinWidth(150);
-        Color.setMaxWidth(190);
-        Color.setCellValueFactory(
-                new PropertyValueFactory<>("color"));
-        Color.setCellFactory(TextFieldTableCell.<Landareak>forTableColumn());
-        
 
         TableColumn<Landareak, String> Height = new TableColumn<>("Height");
         Height.setMinWidth(100);
@@ -101,7 +87,14 @@ public class Koldosaurus_app extends Application {
         Height.setCellValueFactory(
                 new PropertyValueFactory<>("size"));
         Height.setCellFactory(TextFieldTableCell.<Landareak>forTableColumn());
-        
+
+        //Ez dut lortzen kolorea azaltzea, ez dakit zergatik ez duen funtzionatzen
+        TableColumn<Landareak, String> Color = new TableColumn<>("Color");
+        Color.setMinWidth(150);
+        Color.setMaxWidth(190);
+        Color.setCellValueFactory(
+                new PropertyValueFactory<>("Color"));
+        Color.setCellFactory(TextFieldTableCell.<Landareak>forTableColumn());
 
         TableColumn<Landareak, String> Flower
                 = new TableColumn<>("Flowers");
@@ -111,24 +104,23 @@ public class Koldosaurus_app extends Application {
         Flower.setCellValueFactory(
                 new PropertyValueFactory<>("flowers"));
         Flower.setCellFactory(TextFieldTableCell.<Landareak>forTableColumn());
-        
+
         TableColumn<Landareak, String> CName
                 = new TableColumn<>("Cientific Name");
         CName.setMinWidth(180);
         CName.setCellValueFactory(
-                new PropertyValueFactory<>("Cname"));
+                new PropertyValueFactory<>("CName"));
         CName.setCellFactory(TextFieldTableCell.<Landareak>forTableColumn());
-        
 
         //Datuak kargatu
-        //data = Methods.datuak();
+        data = Methods.datuak(taula);
         Methods.datuak(taula);
 
         table.setItems(data);
-        table.getColumns().addAll(NameCol, Description, Color, Height, Flower, CName);
+        table.getColumns().addAll(NameCol, Description, Height, Color, Flower, CName);
 
         final TextField addName = new TextField();
-        addName.setPromptText("Name");
+        addName.setPromptText("Izena");
         addName.setMaxWidth(NameCol.getPrefWidth());
 
         final TextField addDescription = new TextField();
@@ -158,7 +150,7 @@ public class Koldosaurus_app extends Application {
                 lab.setText("You should fill all the fields");
             } else {
                 try {
-                    Float.parseFloat(addAvHeight.getText());
+                    Integer.parseInt(addAvHeight.getText());
                     Boolean flow;
                     if (Flowers.isSelected()) {
                         flow = true;
@@ -175,7 +167,7 @@ public class Koldosaurus_app extends Application {
                     );
 
                     //Datu basera gehitu
-                    Methods.landareaGehitu(p,taula);
+                    Methods.landareaGehitu(p, taula);
 
                     addName.clear();
                     addDescription.clear();
@@ -185,7 +177,7 @@ public class Koldosaurus_app extends Application {
                     Flowers.setSelected(false);
                     lab.setText("");
                     //datuak kargatu berriz
-                    //data = LandareakGertu.datuak();
+                    data = Methods.datuak(taula);
 
                     table.setItems(data);
                 } catch (NumberFormatException nf) {
@@ -200,13 +192,13 @@ public class Koldosaurus_app extends Application {
             Landareak landare = table.getSelectionModel().getSelectedItem();
 
             //Hemen ezabatu objetua
-            Methods.ezabatu(taula,landare.getCName());
-            
+            Methods.ezabatu(taula, landare.getCName());
+
             data.remove(landare);
             table.setItems(data);
         });
 
-        hb.getChildren().addAll(addName, addDescription, addColor, addAvHeight, Flowers, addCName, addButton, removeButton);
+        hb.getChildren().addAll(addName, addDescription, addAvHeight, addColor, Flowers, addCName, addButton, removeButton);
         hb.setSpacing(3);
         final VBox vbox = new VBox();
         vbox.setSpacing(5);

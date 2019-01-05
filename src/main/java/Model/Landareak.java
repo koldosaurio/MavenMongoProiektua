@@ -15,7 +15,7 @@ package Model;
  */
 public class Landareak {
     private String name,cName, description,color,flowers;
-    private float size;
+    private int size;
     public Landareak(){
         
     }
@@ -37,7 +37,7 @@ public class Landareak {
         color=col;
     }
     public void setSize(String height){
-        size=Float.parseFloat(height);
+        size=Integer.parseInt(height);
     }
     public void setFlowers(Boolean flow){
         if (flow==true){
